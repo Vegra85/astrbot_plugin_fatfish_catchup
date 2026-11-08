@@ -1,0 +1,26 @@
+name: astrbot_plugin_fatfish_catchup
+display_name: 鱼力max · 掉线补回
+desc: AstrBot 重启、QQ 掉线、模型出错时，私聊它、@ 它的话就石沉大海。装上以后恢复了自己去翻聊天记录，把冲它说的、没回的按对话补回一次（群里 @ 那个人），太久的、补过的、别人家 AI 的不补。细节和配置见 README。
+short_desc: 掉线时没回的话，恢复后补回
+version: v0.1.0
+author: Vegra85
+repo: https://github.com/Vegra85/astrbot_plugin_fatfish_catchup
+license: MIT
+astrbot_version: ">=4.29,<5"
+support_platforms:
+  - aiocqhttp
+social_link: https://github.com/Vegra85
+category: 工具
+tags:
+  - 鱼力max
+  - 大肥鱼
+  - DeepSeek
+  - 掉线
+  - 重启
+  - 补回
+  - 离线消息
+  - 漏回
+  - 不回消息
+  - NapCat
+  - 私聊
+  - 群聊

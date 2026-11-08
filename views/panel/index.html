@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>掉线补回</title>
+<style>
+  :root { --bg:#ffffff; --fg:#1f2328; --muted:#656d76; --line:#e5e7eb; --card:#f6f8fa; --accent:#2563eb; --bad:#c2410c; --ok:#15803d; }
+  html[data-theme="dark"] { --bg:#16181d; --fg:#e6e6e6; --muted:#9aa4b2; --line:#2c313a; --card:#1e2128; --accent:#60a5fa; --bad:#fb923c; --ok:#4ade80; }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:16px; background:var(--bg); color:var(--fg); font:14px/1.6 system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+  h1 { font-size:18px; margin:0 0 4px; }
+  h2 { font-size:15px; margin:22px 0 8px; }
+  .sub { color:var(--muted); margin:0 0 14px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
+  .card b { display:block; font-size:22px; }
+  .card span { color:var(--muted); font-size:12px; }
+  .wrap { overflow-x:auto; border:1px solid var(--line); border-radius:10px; }
+  table { border-collapse:collapse; width:100%; min-width:620px; }
+  th, td { text-align:left; padding:7px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--muted); font-weight:500; font-size:12px; background:var(--card); white-space:nowrap; }
+  tr:last-child td { border-bottom:none; }
+  .empty { color:var(--muted); padding:10px; }
+  .tag { display:inline-block; padding:0 6px; border-radius:6px; font-size:12px; border:1px solid var(--line); white-space:nowrap; }
+  .tag.bad { color:var(--bad); border-color:var(--bad); }
+  .tag.ok { color:var(--ok); border-color:var(--ok); }
+  button { font:inherit; font-size:13px; padding:4px 12px; border-radius:6px; border:1px solid var(--line); background:var(--bg); color:var(--fg); cursor:pointer; }
+  button:hover { border-color:var(--accent); color:var(--accent); }
+  pre { white-space:pre-wrap; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin:0; font:13px/1.6 inherit; }
+  .muted { color:var(--muted); }
+  #err { color:var(--bad); }
+</style>
+</head>
+<body>
+<h1>掉线补回</h1>
+<p class="sub">AstrBot 重启、QQ 掉线、模型出错的那段时间，别人私聊它、群里 @ 它的话：恢复以后去翻聊天记录，冲它说的、没回的按对话补回一次。</p>
+<div id="err"></div>
+<div class="cards">
+  <div class="card"><b id="n-out">-</b><span>记下的掉线次数（最近 20 次）</span></div>
+  <div class="card"><b id="n-units">-</b><span>补回的对话（合计）</span></div>
+  <div class="card"><b id="n-failed">-</b><span>模型出错没回上、等着补的</span></div>
+  <div class="card"><b id="hooked" style="font-size:14px">-</b><span>NapCat 断开 / 连上</span></div>
+</div>
+
+<h2>现在</h2>
+<pre id="status">-</pre>
+<p><button id="run">手动补一次</button> <span class="muted">（最近「最长补多久」以内、装上以后的；同 /补回 现在）</span></p>
+
+<h2>最近几次</h2>
+<div class="wrap"><table id="t-out"></table></div>
+
+<h2>模型出错没回上、等着补的</h2>
+<div class="wrap"><table id="t-failed"></table></div>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+  let api = null;
+
+  function render(d) {
+    const outs = d.outages || [];
+    $("n-out").textContent = outs.length;
+    $("n-units").textContent = outs.reduce((n, o) => n + (o.units || []).length, 0);
+    $("n-failed").textContent = (d.failed || []).length;
+    $("hooked").innerHTML = d.hooked ? '<span class="tag ok">认得出</span>' : '<span class="tag bad">没挂上（只靠重启心跳）</span>';
+    $("status").textContent = d.status || "-";
+    const t = $("t-out");
+    t.innerHTML = outs.length
+      ? "<tr><th>什么时候补的</th><th>哪种</th><th>那段时间</th><th>补了</th><th>没补</th></tr>" + outs.map((o) => "<tr><td>" + esc(o.at_text) +
+          "</td><td>" + esc(o.kind_name) + "</td><td>" + (o.from_text ? esc(o.from_text) + " – " + esc(o.to_text) : "") + "</td><td>" +
+          ((o.units || []).map((u) => esc(u.where) + "（" + esc(u.n) + " 条）").join("<br>") || '<span class="muted">没有要补的</span>') +
+          (o.note ? '<br><span class="muted">' + esc(o.note) + "</span>" : "") + "</td><td>" + (esc(o.skipped_text) || '<span class="muted">-</span>') + "</td></tr>").join("")
+      : '<tr><td class="empty">还没掉过线（装上以后没遇到过要补的）。</td></tr>';
+    const f = $("t-failed");
+    const fs = d.failed || [];
+    f.innerHTML = fs.length
+      ? "<tr><th>对话</th><th>原话</th><th>为什么没回上</th></tr>" + fs.map((r) => "<tr><td>" + esc(r.where) + "</td><td>" + esc(r.text) + "</td><td>" + esc(r.why) + "</td></tr>").join("")
+      : '<tr><td class="empty">没有。</td></tr>';
+  }
+
+  async function load() {
+    try { render(await api.apiGet("state")); $("err").textContent = ""; }
+    catch (e) { $("err").textContent = "读不到插件状态：" + (e && e.message ? e.message : e); }
+  }
+
+  $("run").addEventListener("click", async () => {
+    if (!api) return;
+    $("run").disabled = true;
+    try { const d = await api.apiPost("action", { op: "run" }); render(d); }
+    catch (e) { $("err").textContent = "没补成：" + (e && e.message ? e.message : e); }
+    finally { $("run").disabled = false; }
+  });
+
+  async function start() {
+    for (let i = 0; i < 50 && !window.AstrBotPluginView; i++) await new Promise((r) => setTimeout(r, 100));
+    api = window.AstrBotPluginView;
+    if (!api) { $("err").textContent = "这个页面要在 AstrBot 的插件页面里打开。"; return; }
+    await api.ready();
+    await load();
+    setInterval(load, 15000);
+  }
+  window.addEventListener("load", start);
+})();
+</script>
+</body>
+</html>
