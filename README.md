@@ -1,6 +1,6 @@
 # 鱼力max · 掉线补回
 
-> **鱼力max 系列（鱼有分寸）**：[活人感](https://github.com/Vegra85/astrbot_plugin_fatfish_alive) · [认 AI](https://github.com/Vegra85/astrbot_plugin_fatfish_aiguard) · [看图懂梗](https://github.com/Vegra85/astrbot_plugin_fatfish_seememe) · [法庭](https://github.com/Vegra85/astrbot_plugin_fatfish_court) · [掉线补回](https://github.com/Vegra85/astrbot_plugin_fatfish_catchup) —— 每个都能单独用，一起装自动让路。作者 Vegra85；跟市场上其他叫「大肥鱼」的插件无关。
+> **鱼力max 系列 · 九颗鱼珠（鱼有分寸）**：会聊 [活人感](https://github.com/Vegra85/astrbot_plugin_fatfish_alive) · **掉线补回** ｜ 会看 [看图懂梗](https://github.com/Vegra85/astrbot_plugin_fatfish_seememe) · [表情包懂你](https://github.com/Vegra85/astrbot_plugin_fatfish_sticker) · [认 AI](https://github.com/Vegra85/astrbot_plugin_fatfish_aiguard) ｜ 会记 [说到做到](https://github.com/Vegra85/astrbot_plugin_fatfish_promise) · [记忆卫生](https://github.com/Vegra85/astrbot_plugin_fatfish_memhyg) ｜ 守规矩 [法庭](https://github.com/Vegra85/astrbot_plugin_fatfish_court) · [群管说了算](https://github.com/Vegra85/astrbot_plugin_fatfish_groupadmin) —— 每个都能单独用，一起装自动让路；集齐九颗召唤神鱼。作者 Vegra85；跟市场上其他叫「大肥鱼」的插件无关。
 
 一句话：AstrBot 重启、QQ（NapCat）掉线、模型出错的那段时间，别人私聊它、群里 @ 它的话就石沉大海 —— 对方以为它不理人。装上以后，恢复了它自己去翻聊天记录，把冲它说的、还没回的按对话补回一次（群里回的时候 @ 那个人）；太久以前的、补过的、它后来回过的、别人家 AI 发的都不补。
 
@@ -142,12 +142,20 @@ python tests/e2e_astrbot.py --sib 别的鱼力max插件所在的文件夹   # �
 
 ## 鱼力max 全家福
 
-| 插件 | 装它如果你… | 解决什么 |
-|---|---|---|
-| [鱼力max · 活人感](https://github.com/Vegra85/astrbot_plugin_fatfish_alive) | 嫌机器人一条一条机械地回、人人说话都接、花钱太快 | 连发攒一攒再回、没 @ 也会接话、该闭嘴时闭嘴、花多了少说 |
-| [鱼力max · 认 AI](https://github.com/Vegra85/astrbot_plugin_fatfish_aiguard) | 群里还有别人家的机器人，两条鱼互聊个没完 | 不用填名单，自己认出别家 AI、刹住对聊 |
-| [鱼力max · 看图懂梗](https://github.com/Vegra85/astrbot_plugin_fatfish_seememe) | 群友发梗图它看不懂、认不出图里是它自己 | 回话前先看懂字、画面、梗，谐音梗也查 |
-| [鱼力max · 法庭](https://github.com/Vegra85/astrbot_plugin_fatfish_court) | 机器人一句气话就拉黑人、被人一说就乱认错 | 先核对再认错、只有红线才立案、判了才冷却，能申诉 |
-| [鱼力max · 掉线补回](https://github.com/Vegra85/astrbot_plugin_fatfish_catchup) | 重启、掉线、模型出错的时候别人找它，它像没看见 | 恢复以后自己翻聊天记录，把冲它说的、没回的按对话补回一次 |
+九个插件就是九颗「鱼珠」：每颗单独装都能用，一起装会自动让路、不打架。
+
+**集齐九颗，召唤神鱼** —— 一条会接话、看得懂梗、记得住事、守得住规矩，还知道什么时候该闭嘴的鱼。（神鱼不负责实现愿望，只负责不刷屏。）
+
+| 鱼珠 | 插件 | 装它如果你… | 解决什么 |
+|---|---|---|---|
+| ① 会聊 | [鱼力max · 活人感](https://github.com/Vegra85/astrbot_plugin_fatfish_alive) | 嫌机器人一条一条机械地回、人人说话都接、花钱太快 | 连发攒一攒再回、没 @ 也会接话、该闭嘴时闭嘴、花多了少说 |
+| ② 会聊 | [鱼力max · 掉线补回](https://github.com/Vegra85/astrbot_plugin_fatfish_catchup)（就是这颗） | 重启、掉线、模型出错时，找它的话石沉大海 | 恢复后自己翻记录，把冲它说的、没回的按对话补回一次 |
+| ③ 会看 | [鱼力max · 看图懂梗](https://github.com/Vegra85/astrbot_plugin_fatfish_seememe) | 群友发梗图它看不懂、认不出图里是它自己 | 回话前先看懂字、画面、梗，谐音梗也查 |
+| ④ 会看 | [鱼力max · 表情包懂你](https://github.com/Vegra85/astrbot_plugin_fatfish_sticker) | 表情包插件只会按分类随机发，发得牛头不对马嘴 | 从群友怎么用学意思，回话时挑对的那张，不刷屏 |
+| ⑤ 会看 | [鱼力max · 认 AI](https://github.com/Vegra85/astrbot_plugin_fatfish_aiguard) | 群里还有别人家的机器人，两条鱼互聊个没完 | 不用填名单，自己认出别家 AI、刹住对聊 |
+| ⑥ 会记 | [鱼力max · 说到做到](https://github.com/Vegra85/astrbot_plugin_fatfish_promise) | 机器人嘴上答应「明天提醒你」「我去睡了」，转头就忘、接着冒泡 | 答应的事到点用它自己的口吻去做，说去睡就真不冒泡 |
+| ⑦ 会记 | [鱼力max · 记忆卫生](https://github.com/Vegra85/astrbot_plugin_fatfish_memhyg) | 记忆插件什么都往里塞，揣测当事实、「明天」过几天还是明天 | 只记事实、日期落地、新说法取代旧的、会淡会忘，用户自己能看能删 |
+| ⑧ 守规矩 | [鱼力max · 法庭](https://github.com/Vegra85/astrbot_plugin_fatfish_court) | 机器人一句气话就拉黑人、被人一说就乱认错 | 先核对再认错、只有红线才立案、判了才冷却，能申诉 |
+| ⑨ 守规矩 | [鱼力max · 群管说了算](https://github.com/Vegra85/astrbot_plugin_fatfish_groupadmin) | 群主喊它安静它不听，群友嫌它烦也没办法 | 群主 / 管理员说安静就安静，群友「别接我的话」只对他，被禁言就不发 |
 
 觉得有用请点个 Star，市场里点个「喜欢」—— 这两样决定新用户能不能看到它。
